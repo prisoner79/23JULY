@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>A Little Surprise For You 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============================================================
+   ✏️  EDIT ME — see README.md for the full editing guide
+   Most of what you'll want to change lives in CONFIG at the
+   bottom of this file (in the <script> tag), not up here.
+   ============================================================ */
+
+    :root {
+      --dark1: #241242;
+      --dark2: #5c2367;
+      --dark3: #b1447e;
+      --blush: #fff0f4;
+      --cream: #fffaf9;
+      --maroon: #7a2e40;
+      --pink: #ff6f91;
+      --pink-deep: #e0556f;
+      --pink-deeper: #c9425f;
+      --gold: #ffcf6e;
+      --mint: #bfe8d4;
+      --sky: #bfe0f5;
+      --shadow: 0 10px 30px rgba(122, 46, 64, .18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--blush);
+      overflow-x: hidden;
+      min-height: 100vh;
+      color: var(--maroon);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Baloo 2', sans-serif;
+      margin: 0;
+    }
+
+    .script {
+      font-family: 'Caveat', cursive;
+    }
+
+    button {
+      font-family: 'Baloo 2', sans-serif;
+      border: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ---------- floating hearts / stars background ---------- */
+    .bg-float {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-float span {
+      position: absolute;
+      bottom: -10%;
+      opacity: .85;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .15));
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: .9;
+      }
+
+      90% {
+        opacity: .7;
+      }
+
+      100% {
+        transform: translateY(-115vh) rotate(25deg);
+        opacity: 0;
+      }
+    }
+
+    /* ---------- screens ---------- */
+    .screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .screen[hidden] {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn .6s ease both;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .shake {
+      animation: shake .5s ease;
+    }
+
+    @keyframes shake {
+
+      10%,
+      90% {
+        transform: translateX(-2px);
+      }
+
+      20%,
+      80% {
+        transform: translateX(4px);
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translateX(-8px);
+      }
+
+      40%,
+      60% {
+        transform: translateX(8px);
+      }
+    }
+
+    /* ---------- animated mascot / gif slots (used on several screens) ---------- */
+    .mascot-box {
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-9px) rotate(-1.5deg);
+      }
+    }
+
+    .gif-mascot {
+      width: 100%;
+      max-width: 240px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(122, 46, 64, .25);
+    }
+
+    .gif-mascot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .gif-fallback-svg {
+      display: none;
+    }
+
+    .tear {
+      animation: tearDrop 1.6s ease-in infinite;
+    }
+
+    @keyframes tearDrop {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: .2;
+      }
+
+      100% {
+        transform: translateY(14px);
+        opacity: 0;
+      }
+    }
+
+    /* ============ LOCK SCREEN ============ */
+    #screen-lock {
+      background: linear-gradient(160deg, var(--dark1), var(--dark2) 55%, var(--dark3));
+    }
+
+    .lock-card {
+      width: 100%;
+      max-width: 820px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .18);
+      backdrop-filter: blur(14px);
+      border-radius: 28px;
+      padding: 36px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    }
+
+    .lock-photo-wrap {
+      flex: 1 1 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-width: 220px;
+    }
+
+    .lock-photo-frame {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      border: 6px dashed #ffb6c9;
+      padding: 8px;
+      background: radial-gradient(circle at 30% 20%, #fff, #ffe4ec);
+      position: relative;
+    }
+
+    .lock-photo-frame img,
+    .lock-photo-frame .ph-fallback {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .ph-fallback {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffd6e2, #ffe9c7);
+      color: #a84c66;
+      font-size: 12px;
+      text-align: center;
+      padding: 10px;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .lock-stars span {
+      position: absolute;
+      font-size: 20px;
+    }
+
+    .lock-stars span:nth-child(1) {
+      top: -6px;
+      left: 6px;
+    }
+
+    .lock-stars span:nth-child(2) {
+      bottom: 8px;
+      left: -14px;
+    }
+
+    .lock-stars span:nth-child(3) {
+      top: 36%;
+      right: -18px;
+    }
+
+    .lock-stars span:nth-child(4) {
+      bottom: -10px;
+      right: 20px;
+    }
+
+    .lock-right {
+      flex: 1 1 280px;
+      min-width: 260px;
+    }
+
+    .lock-right h2 {
+      color: #fff;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .lock-hint {
+      color: #f3d9e6;
+      font-size: 13px;
+      margin-bottom: 16px;
+      opacity: .85;
+    }
+
+    .pass-boxes {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pass-boxes .box {
+      width: 52px;
+      height: 56px;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, .5);
+      background: rgba(255, 255, 255, .08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .pass-boxes .box.filled {
+      background: rgba(255, 255, 255, .22);
+      border-color: #fff;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 260px;
+    }
+
+    .keypad button {
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .12);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, .3);
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    .keypad button:active {
+      transform: scale(.9);
+      background: rgba(255, 255, 255, .35);
+    }
+
+    .unlock-btn {
+      margin-top: 16px;
+      width: 100%;
+      max-width: 260px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: .5px;
+      box-shadow: 0 8px 20px rgba(224, 85, 111, .5);
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .unlock-btn.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* ============ WRONG PASSWORD SCREEN ============ */
+    #screen-wrong {
+      background: linear-gradient(160deg, #fff0f4, #ffe1ea);
+      text-align: center;
+    }
+
+    .wrong-box h2 {
+      color: var(--pink-deeper);
+      font-size: clamp(26px, 6vw, 40px);
+      margin-bottom: 6px;
+    }
+
+    .wrong-box p.sub {
+      color: var(--maroon);
+      opacity: .75;
+      margin-bottom: 18px;
+    }
+
+    .try-again-btn,
+    .no-btn-real,
+    .replay-btn {
+      padding: 12px 30px;
+      border-radius: 999px;
+      background: var(--pink-deep);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 8px 18px rgba(224, 85, 111, .4);
+      transition: transform .15s ease;
+    }
+
+    .try-again-btn:hover,
+    .replay-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+
+    /* ============ ASK / YES-NO SCREEN ============ */
+    #screen-ask,
+    #screen-no {
+      background: radial-gradient(ellipse at 50% 20%, #ffe3ec 0%, #fff8f6 60%);
+      text-align: center;
+    }
+
+    .ask-card {
+      max-width: 520px;
+    }
+
+    .ask-card h2 {
+      font-size: clamp(24px, 5.5vw, 34px);
+      color: var(--pink-deeper);
+      margin-bottom: 6px;
+    }
+
+    .ask-card p.sub {
+      font-size: 18px;
+      opacity: .8;
+      margin-bottom: 6px;
+    }
+
+    .mascot-box {
+      margin: 18px auto;
+      width: 220px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-top: 22px;
+      position: relative;
+      height: 60px;
+    }
+
+    .yes-btn {
+      padding: 12px 34px;
+      border-radius: 999px;
+      background: var(--pink-deep);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17px;
+      box-shadow: 0 8px 18px rgba(224, 85, 111, .4);
+      transition: transform .15s ease;
+    }
+
+    .yes-btn:hover {
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .no-btn-real {
+      background: #fff;
+      color: var(--pink-deep);
+      border: 2px solid var(--pink-deep);
+      box-shadow: none;
+    }
+
+    /* ============ VIRTUAL HUG + BIRTHDAY SCREENS ============ */
+    #screen-hug {
+      background: radial-gradient(ellipse at 50% 15%, #ffe3ec 0%, #fff8f6 60%);
+      text-align: center;
+    }
+
+    #screen-birthday {
+      background: radial-gradient(ellipse at 50% 15%, #ffd9e6 0%, #fff3f6 60%);
+      text-align: center;
+    }
+
+    .continue-heart {
+      margin-top: 26px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+      color: #fff;
+      font-size: 24px;
+      box-shadow: 0 10px 24px rgba(224, 85, 111, .45);
+      animation: pulseHeart 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulseHeart {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.12);
+      }
+    }
+
+    .continue-label {
+      margin-top: 8px;
+      font-size: 13px;
+      opacity: .65;
+    }
+
+    /* ============ PHOTO MEMORY SCREEN ============ */
+    #screen-photos {
+      background: linear-gradient(160deg, var(--dark1), var(--dark2) 60%, var(--dark3));
+      padding: 0;
+    }
+
+    .photo-stage {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .photo-frame {
+      width: min(86vw, 360px);
+      height: min(86vw, 360px);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+      border: 5px solid rgba(255, 255, 255, .85);
+      background: #fff;
+    }
+
+    .photo-frame .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .8s ease;
+    }
+
+    .photo-frame .slide.active {
+      opacity: 1;
+    }
+
+    .photo-frame .slide img,
+    .photo-frame .slide .ph-fallback {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: kenburns 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes kenburns {
+      from {
+        transform: scale(1);
+      }
+
+      to {
+        transform: scale(1.12);
+      }
+    }
+
+    .photo-caption {
+      color: #fff;
+      font-family: 'Caveat', cursive;
+      font-size: 26px;
+      text-align: center;
+      min-height: 34px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    }
+
+    .photo-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .photo-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .35);
+      transition: .25s;
+    }
+
+    .photo-dots span.active {
+      background: #fff;
+      width: 20px;
+      border-radius: 5px;
+    }
+
+    .music-toggle {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      z-index: 3;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .15);
+      border: 1px solid rgba(255, 255, 255, .4);
+      color: #fff;
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tap-hint {
+      position: absolute;
+      bottom: 26px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #f6d7e4;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    /* ============ FINAL SCREEN ============ */
+    #screen-final {
+      background: linear-gradient(180deg, #fff0f4, #ffe6ee 40%, #ffd9e6);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .final-card {
+      max-width: 560px;
+    }
+
+    .final-mascots {
+      width: 230px;
+      margin: 0 auto 10px;
+      animation: bob 2.4s ease-in-out infinite;
+    }
+
+    .final-card h2 {
+      font-size: clamp(28px, 6.5vw, 42px);
+      color: var(--pink-deeper);
+      margin-bottom: 10px;
+    }
+
+    .final-card .letter {
+      background: #fff;
+      border-radius: 22px;
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.65;
+      color: #5b2c3a;
+      white-space: pre-line;
+      border: 2px dashed #ffc7d6;
+    }
+
+    .signoff {
+      margin-top: 16px;
+      font-family: 'Caveat', cursive;
+      font-size: 26px;
+      color: var(--pink-deeper);
+    }
+
+    .replay-btn {
+      margin-top: 22px;
+      background: transparent;
+      color: var(--pink-deeper);
+      border: 2px solid var(--pink-deeper);
+      box-shadow: none;
+    }
+
+    @media(max-width:640px) {
+      .lock-card {
+        padding: 24px;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .keypad {
+        margin: 0 auto;
+      }
+
+      .pass-boxes {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+    // defined early so inline onerror="" handlers on <img> tags below always have it ready
+    function fallbackNode(label) {
+      const d = document.createElement('div');
+      d.className = 'ph-fallback';
+      d.innerHTML = '<div style="font-size:26px">🐾</div><div>' + label + '</div>';
+      return d;
+    }
+    // if a GIF file is missing, hide the gif slot and reveal the built-in animated mascot instead
+    function swapToFallback(img) {
+      const wrap = img.closest('.gif-mascot');
+      if (wrap) wrap.style.display = 'none';
+      const box = img.closest('.mascot-box') || wrap.parentElement;
+      const svg = box ? box.querySelector('.gif-fallback-svg') : null;
+      if (svg) svg.style.display = 'block';
+    }
+  </script>
+
+  <div class="bg-float" id="bgFloat"></div>
+
+  <!-- ============ SCREEN 1: LOCK ============ -->
+  <section class="screen" id="screen-lock">
+    <div class="lock-card fade-in">
+      <div class="lock-photo-wrap">
+        <div class="lock-photo-frame">
+          <img id="lockPhotoImg" src="photos/lock-photo.jpg" alt=""
+            onerror="this.replaceWith(fallbackNode('Add her photo here → photos/lock-photo.jpg'))">
+        </div>
+        <div class="lock-stars">
+          <span>✨</span><span>💗</span><span>⭐</span><span>💫</span>
+        </div>
+      </div>
+      <div class="lock-right">
+        <h2 id="lockTitle">Enter the passcode 🔒</h2>
+        <p class="lock-hint" id="lockHint">Hint: a date we'll never forget 💕</p>
+        <div class="pass-boxes" id="passBoxes">
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
+        </div>
+        <div class="keypad" id="keypad">
+          <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+          <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+          <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+          <button data-k="back">⌫</button><button data-k="0">0</button><button data-k="clear">✕</button>
+        </div>
+        <button class="unlock-btn" id="unlockBtn">UNLOCK 💗</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2: WRONG PASSWORD ============ -->
+  <section class="screen" id="screen-wrong" hidden>
+    <div class="wrong-box fade-in">
+      <div class="mascot-box" style="margin:0 auto 10px;">
+        <div class="gif-mascot">
+          <img src="gifs/wrong-passcode.gif" alt="" onerror="swapToFallback(this)">
+        </div>
+        <!-- sad cat + dog mascot (shown if no gif file is provided) -->
+        <svg class="gif-fallback-svg" viewBox="0 0 220 180" width="200">
+          <ellipse cx="110" cy="150" rx="95" ry="18" fill="#f3c9d6" opacity=".5" />
+          <!-- dog -->
+          <g transform="translate(15,40)">
+            <ellipse cx="40" cy="30" rx="26" ry="10" fill="#e9c9a8" transform="rotate(-25 40 30)" />
+            <ellipse cx="70" cy="30" rx="26" ry="10" fill="#e9c9a8" transform="rotate(25 70 30)" />
+            <circle cx="55" cy="55" r="38" fill="#f3d9b8" />
+            <circle cx="43" cy="55" r="4" fill="#5b3a29" />
+            <circle cx="67" cy="55" r="4" fill="#5b3a29" />
+            <path d="M40 68 q3 5 0 8" stroke="#5b3a29" stroke-width="2" fill="none" />
+            <path d="M70 68 q-3 5 0 8" stroke="#5b3a29" stroke-width="2" fill="none" />
+            <ellipse cx="55" cy="70" rx="6" ry="4" fill="#c47a56" />
+            <path d="M42 82 q13 8 26 0" stroke="#a85b3c" stroke-width="2.5" fill="none" />
+            <ellipse class="tear" cx="43" cy="62" rx="2.5" ry="4" fill="#8fd0f0" />
+          </g>
+          <!-- cat -->
+          <g transform="translate(115,42)">
+            <path d="M20 20 L30 -4 L38 22 Z" fill="#b7c9e0" />
+            <path d="M70 20 L60 -4 L52 22 Z" fill="#b7c9e0" />
+            <circle cx="46" cy="50" r="36" fill="#cddbee" />
+            <circle cx="34" cy="50" r="4" fill="#3c4a5e" />
+            <circle cx="58" cy="50" r="4" fill="#3c4a5e" />
+            <path d="M31 63 q3 5 0 8" stroke="#3c4a5e" stroke-width="2" fill="none" />
+            <path d="M61 63 q-3 5 0 8" stroke="#3c4a5e" stroke-width="2" fill="none" />
+            <path d="M40 60 q6 6 12 0" stroke="#5b3a4a" stroke-width="2" fill="none" />
+            <circle cx="22" cy="58" r="5" fill="#f6b8c6" opacity=".7" />
+            <circle cx="70" cy="58" r="5" fill="#f6b8c6" opacity=".7" />
+            <ellipse class="tear" cx="35" cy="65" rx="2.5" ry="4" fill="#8fd0f0" style="animation-delay:.6s" />
+          </g>
+        </svg>
+      </div>
+      <h2 id="wrongTitle">Oops, wrong passcode 🥺</h2>
+      <p class="sub" id="wrongSub">Try that special date again...</p>
+      <button class="try-again-btn" id="wrongTryAgain">TRY AGAIN</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3: ASK YES/NO ============ -->
+  <section class="screen" id="screen-ask" hidden>
+    <div class="ask-card fade-in">
+      <h2 id="askTitle">I made something special for you 💌</h2>
+      <p class="sub" id="askSub">Do you wanna see it?</p>
+      <div class="mascot-box">
+        <div class="gif-mascot">
+          <img src="gifs/surprise-box.gif" alt="" onerror="swapToFallback(this)">
+        </div>
+        <!-- cat + dog peeking from a box, happy (shown if no gif file is provided) -->
+        <svg class="gif-fallback-svg" viewBox="0 0 220 190" width="220">
+          <ellipse cx="110" cy="175" rx="90" ry="10" fill="#f3c9d6" opacity=".4" />
+          <path d="M40 110 h140 l-10 60 h-120 z" fill="#e8c493" />
+          <path d="M40 110 h140 l6 18 h-152 z" fill="#f2d5a8" />
+          <path d="M110 108 v20 M40 110 l35 18 M180 110 l-35 18" stroke="#c69a5f" stroke-width="3" fill="none" />
+          <g transform="translate(20,35)">
+            <ellipse cx="40" cy="28" rx="24" ry="10" fill="#e9c9a8" transform="rotate(-25 40 28)" />
+            <ellipse cx="70" cy="28" rx="24" ry="10" fill="#e9c9a8" transform="rotate(25 70 28)" />
+            <circle cx="55" cy="52" r="36" fill="#f3d9b8" />
+            <circle cx="44" cy="50" r="4" fill="#5b3a29" />
+            <circle cx="66" cy="50" r="4" fill="#5b3a29" />
+            <ellipse cx="55" cy="62" rx="5" ry="4" fill="#c47a56" />
+            <path d="M44 68 q11 9 22 0" stroke="#a85b3c" stroke-width="2.5" fill="none" />
+            <circle cx="30" cy="56" r="5" fill="#f6b8c6" opacity=".7" />
+            <circle cx="80" cy="56" r="5" fill="#f6b8c6" opacity=".7" />
+          </g>
+          <g transform="translate(110,32)">
+            <path d="M18 18 L27 -6 L36 20 Z" fill="#b7c9e0" />
+            <path d="M66 18 L57 -6 L48 20 Z" fill="#b7c9e0" />
+            <circle cx="42" cy="48" r="34" fill="#cddbee" />
+            <circle cx="31" cy="46" r="4" fill="#3c4a5e" />
+            <circle cx="53" cy="46" r="4" fill="#3c4a5e" />
+            <path d="M36 58 q6 5 12 0" stroke="#5b3a4a" stroke-width="2" fill="none" />
+            <circle cx="18" cy="52" r="5" fill="#f6b8c6" opacity=".7" />
+            <circle cx="66" cy="52" r="5" fill="#f6b8c6" opacity=".7" />
+            <path d="M8 40 q-14 -4 -12 -18" stroke="#cddbee" stroke-width="6" fill="none" stroke-linecap="round" />
+          </g>
+          <text x="150" y="30" font-size="20">💕</text>
+        </svg>
+      </div>
+      <div class="btn-row">
+        <button class="yes-btn" id="yesBtn">YES</button>
+        <button class="no-btn-real" id="noBtn">NO</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 4: WHY NO ============ -->
+  <section class="screen" id="screen-no" hidden>
+    <div class="wrong-box fade-in">
+      <div class="mascot-box" style="margin:0 auto 10px;">
+        <div class="gif-mascot">
+          <img src="gifs/crying-cat-dog.gif" alt="" onerror="swapToFallback(this)">
+        </div>
+        <!-- crying cat + dog (shown if no gif file is provided) -->
+        <svg class="gif-fallback-svg" viewBox="0 0 220 180" width="200">
+          <g transform="translate(15,40)">
+            <ellipse cx="40" cy="30" rx="26" ry="10" fill="#e9c9a8" transform="rotate(-35 40 30)" />
+            <ellipse cx="70" cy="30" rx="26" ry="10" fill="#e9c9a8" transform="rotate(35 70 30)" />
+            <circle cx="55" cy="55" r="38" fill="#f3d9b8" />
+            <path d="M39 51 l8 8 M47 51 l-8 8" stroke="#5b3a29" stroke-width="2.5" />
+            <path d="M63 51 l8 8 M71 51 l-8 8" stroke="#5b3a29" stroke-width="2.5" />
+            <ellipse cx="55" cy="70" rx="6" ry="4" fill="#c47a56" />
+            <path d="M44 80 q11 -6 22 0" stroke="#a85b3c" stroke-width="2.5" fill="none" />
+            <ellipse class="tear" cx="41" cy="60" rx="3" ry="5" fill="#8fd0f0" />
+            <ellipse class="tear" cx="49" cy="60" rx="3" ry="5" fill="#8fd0f0" style="animation-delay:.4s" />
+          </g>
+          <g transform="translate(115,42)">
+            <path d="M20 20 L30 -4 L38 22 Z" fill="#b7c9e0" />
+            <path d="M70 20 L60 -4 L52 22 Z" fill="#b7c9e0" />
+            <circle cx="46" cy="50" r="36" fill="#cddbee" />
+            <path d="M30 46 l8 8 M38 46 l-8 8" stroke="#3c4a5e" stroke-width="2.5" />
+            <path d="M54 46 l8 8 M62 46 l-8 8" stroke="#3c4a5e" stroke-width="2.5" />
+            <path d="M40 63 q6 -4 12 0" stroke="#5b3a4a" stroke-width="2" fill="none" />
+            <ellipse class="tear" cx="32" cy="58" rx="3" ry="5" fill="#8fd0f0" style="animation-delay:.7s" />
+            <ellipse class="tear" cx="40" cy="58" rx="3" ry="5" fill="#8fd0f0" style="animation-delay:.2s" />
+          </g>
+        </svg>
+      </div>
+      <h2 id="noTitle">Why did you click no 🥺</h2>
+      <p class="sub" id="noSub">Give it another chance?</p>
+      <button class="try-again-btn" id="noTryAgain">TRY AGAIN</button>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 4b: VIRTUAL HUG ============ -->
+  <section class="screen" id="screen-hug" hidden>
+    <div class="ask-card fade-in">
+      <h2 id="hugTitle">Virtual hug for ya! 🤗</h2>
+      <p class="sub" id="hugSub">Sending you the biggest hug right now</p>
+      <div class="mascot-box">
+        <div class="gif-mascot">
+          <img src="gifs/virtual-hug.gif" alt="" onerror="swapToFallback(this)">
+        </div>
+        <!-- hugging cat + dog (shown if no gif file is provided) -->
+        <svg class="gif-fallback-svg" viewBox="0 0 220 180" width="210">
+          <text x="70" y="26" font-size="20">💗</text><text x="130" y="18" font-size="16">💕</text>
+          <g transform="translate(45,45)">
+            <ellipse cx="40" cy="30" rx="24" ry="10" fill="#e9c9a8" transform="rotate(-25 40 30)" />
+            <circle cx="45" cy="55" r="36" fill="#f3d9b8" />
+            <circle cx="34" cy="54" r="4" fill="#5b3a29" />
+            <ellipse cx="45" cy="65" rx="5" ry="4" fill="#c47a56" />
+            <path d="M34 71 q11 8 22 0" stroke="#a85b3c" stroke-width="2.5" fill="none" />
+            <circle cx="24" cy="59" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M75 58 q20 4 22 -22" stroke="#f3d9b8" stroke-width="14" fill="none" stroke-linecap="round" />
+          </g>
+          <g transform="translate(95,40)">
+            <path d="M55 18 L64 -6 L72 20 Z" fill="#b7c9e0" />
+            <circle cx="60" cy="53" r="34" fill="#cddbee" />
+            <circle cx="70" cy="52" r="4" fill="#3c4a5e" />
+            <path d="M55 60 q6 6 12 0" stroke="#5b3a4a" stroke-width="2" fill="none" />
+            <circle cx="80" cy="57" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M30 55 q-20 6 -20 -20" stroke="#cddbee" stroke-width="14" fill="none" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
+      <button class="continue-heart" id="hugContinue">💗</button>
+      <div class="continue-label">tap to continue</div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 4c: HAPPY BIRTHDAY / I LOVE YOU ============ -->
+  <section class="screen" id="screen-birthday" hidden>
+    <div class="ask-card fade-in">
+      <h2 id="birthdayTitle">Happy Birthday, love 🎂</h2>
+      <p class="sub" id="birthdaySub">I love you more than words can say</p>
+      <div class="mascot-box">
+        <div class="gif-mascot">
+          <img src="gifs/birthday-kiss-hug.gif" alt="" onerror="swapToFallback(this)">
+        </div>
+        <!-- hugging + kissing cat + dog with party hats (shown if no gif file is provided) -->
+        <svg class="gif-fallback-svg" viewBox="0 0 220 190" width="210">
+          <text x="20" y="20" font-size="18">🎉</text><text x="170" y="18" font-size="18">🎉</text>
+          <text x="88" y="14" font-size="20">💕</text>
+          <g transform="translate(40,50)">
+            <path d="M32 6 l6 -20 l6 20 z" fill="#ff6f91" />
+            <circle cx="38" cy="-16" r="4" fill="#ffcf6e" />
+            <ellipse cx="40" cy="30" rx="24" ry="10" fill="#e9c9a8" transform="rotate(-20 40 30)" />
+            <circle cx="48" cy="55" r="36" fill="#f3d9b8" />
+            <path d="M38 53 q4 -4 8 0" stroke="#5b3a29" stroke-width="2.5" fill="none" />
+            <ellipse cx="48" cy="65" rx="5" ry="4" fill="#c47a56" />
+            <circle cx="27" cy="59" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M78 58 q20 4 20 -22" stroke="#f3d9b8" stroke-width="14" fill="none" stroke-linecap="round" />
+          </g>
+          <g transform="translate(92,45)">
+            <path d="M18 10 l7 -20 l7 20 z" fill="#ffcf6e" />
+            <circle cx="25" cy="-12" r="4" fill="#ff6f91" />
+            <path d="M55 18 L64 -6 L72 20 Z" fill="#b7c9e0" />
+            <circle cx="60" cy="53" r="34" fill="#cddbee" />
+            <path d="M52 51 q4 -4 8 0" stroke="#3c4a5e" stroke-width="2.5" fill="none" />
+            <circle cx="82" cy="57" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M30 55 q-20 6 -18 -20" stroke="#cddbee" stroke-width="14" fill="none" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
+      <button class="continue-heart" id="birthdayContinue">💗</button>
+      <div class="continue-label">tap to continue</div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 5: PHOTO MEMORIES ============ -->
+  <section class="screen" id="screen-photos" hidden>
+    <button class="music-toggle" id="musicToggle">🔈</button>
+    <div class="photo-stage">
+      <div class="photo-frame" id="photoFrame"></div>
+      <div class="photo-caption" id="photoCaption"></div>
+      <div class="photo-dots" id="photoDots"></div>
+      <div class="tap-hint">🎵 tap the note icon to play our song</div>
+    </div>
+    <audio id="bgMusic" loop>
+      <source src="music/our-song.mp3" type="audio/mpeg">
+    </audio>
+  </section>
+
+  <!-- ============ SCREEN 6: FINAL MESSAGE ============ -->
+  <section class="screen" id="screen-final" hidden>
+    <div class="final-card fade-in">
+      <div class="final-mascots">
+        <svg viewBox="0 0 240 170" width="230">
+          <g transform="translate(20,40)">
+            <ellipse cx="40" cy="26" rx="24" ry="10" fill="#e9c9a8" transform="rotate(-25 40 26)" />
+            <ellipse cx="70" cy="26" rx="24" ry="10" fill="#e9c9a8" transform="rotate(25 70 26)" />
+            <circle cx="55" cy="50" r="36" fill="#f3d9b8" />
+            <circle cx="44" cy="48" r="4" fill="#5b3a29" />
+            <circle cx="66" cy="48" r="4" fill="#5b3a29" />
+            <ellipse cx="55" cy="60" rx="5" ry="4" fill="#c47a56" />
+            <path d="M42 66 q13 10 26 0" stroke="#a85b3c" stroke-width="2.5" fill="none" />
+            <circle cx="30" cy="54" r="5" fill="#f6b8c6" opacity=".8" />
+            <circle cx="80" cy="54" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M40 4 l4 -14 l4 14 z" fill="#ff6f91" />
+            <circle cx="44" cy="-12" r="4" fill="#ffcf6e" />
+          </g>
+          <g transform="translate(120,32)">
+            <path d="M18 18 L27 -6 L36 20 Z" fill="#b7c9e0" />
+            <path d="M66 18 L57 -6 L48 20 Z" fill="#b7c9e0" />
+            <circle cx="42" cy="48" r="34" fill="#cddbee" />
+            <circle cx="31" cy="46" r="4" fill="#3c4a5e" />
+            <circle cx="53" cy="46" r="4" fill="#3c4a5e" />
+            <path d="M36 58 q6 6 12 0" stroke="#5b3a4a" stroke-width="2" fill="none" />
+            <circle cx="18" cy="52" r="5" fill="#f6b8c6" opacity=".8" />
+            <circle cx="66" cy="52" r="5" fill="#f6b8c6" opacity=".8" />
+            <path d="M18 4 l4 -14 l4 14 z" fill="#ffcf6e" />
+            <circle cx="22" cy="-12" r="4" fill="#ff6f91" />
+          </g>
+          <text x="95" y="20" font-size="22">💞</text>
+        </svg>
+      </div>
+      <h2 id="finalTitle">I'm SO proud of you 💕</h2>
+      <div class="letter" id="finalLetter"></div>
+      <div class="signoff" id="finalSignoff"></div>
+      <button class="replay-btn" id="replayBtn">Watch it again 🔁</button>
+    </div>
+  </section>
+
+  <script>
+    /* ============================================================
+       ✏️  EDIT EVERYTHING YOU WANT HERE — this is the only section
+       you need to touch to make this website fully yours.
+       See README.md for a step-by-step guide.
+       ============================================================ */
+    const CONFIG = {
+      // ---- lock screen ----
+      password: "2307",                          // 4 digits — change to something meaningful
+      lockHint: "Hint: Our birthday dates together 💕",
+      lockPhoto: "./main_img.jpg",         // her photo (optional), put file in /photos
+
+      // ---- wrong password screen ----
+      wrongTitle: "Oops, wrong passcode 🥺",
+      wrongSub: "Try that special date again...",
+
+      // ---- ask screen ----
+      askTitle: "Maine apk liye kuch special banaya hai dekhoge kya ? 💌",
+      askSub: "Sacch battao dekhoge Ma kassam ?",
+
+      // ---- "why did you click no" screen (shown every time NO is pressed) ----
+      noMessages: [
+        "No per Q click kiye yarr 🥺",
+        "Pagal Wagal to nhi ho gyw ho? 🙈",
+        "Please baby ek chance aur dedo?",
+        "Dedo na yrr 🍒",
+        "Challo thik hai lakin bass apke liye... 💗"
+      ],
+
+      // ---- virtual hug screen ----
+      hugTitle: "Jhappi pa le meri jaan 🤗",
+      hugSub: "Jor ki jhappi pa baby...",
+
+      // ---- happy birthday / love screen ----
+      birthdayTitle: "Happy Birthday, Cupcake 🎂",
+      birthdaySub: "हम तोहरा से केतना प्यार करेनी हम तोहके कैसे बताई | \n बोला ते करेजवा चीर के देखा दी हो हमार जान ",
+
+      // ---- GIFs — drop your own animated GIF files in /gifs (see README).
+      // If a file below is missing, a built-in animated cartoon mascot is shown instead. ----
+      gifs: {
+        wrongPassword: "https://media.tenor.com/z7ZABFfLkn8AAAAi/kh%C3%B3c.gif",
+        ask: "https://media.tenor.com/tE-9_eS4P2UAAAAi/bubu-dudu-valentine-valentine%27s-day.gif",
+        noClick: "https://media.tenor.com/z7ZABFfLkn8AAAAi/kh%C3%B3c.gif",     // shown when she taps "No"
+        hug: "https://media.tenor.com/fFpVFqD_4esAAAAi/peluk.gif",
+        birthday: "https://media.tenor.com/KvwRzYnJpFkAAAAi/tkthao219-bubududu.gif"
+      },
+
+      // ---- photo memories (edit captions + drop your images in /photos as 1.jpg ... 8.jpg) ----
+      photos: [
+        { src: "./1.jpg", caption: "The day we met 🥰" },
+        { src: "./2.jpg", caption: "Our first trip together ✈️" },
+        { src: "./3.jpg", caption: "That random Tuesday we laughed for hours 😂" },
+        { src: "./4.jpg", caption: "You, being adorable as usual 💗" },
+        { src: "./5.jpg", caption: "One of my favorite days ever" },
+        { src: "./6.jpg", caption: "Us, being us 🐣" },
+        { src: "./7.jpg", caption: "I still smile looking at this one" },
+        { src: "./8.jpg", caption: "Here's to many many more ✨" }
+      ],
+      photoDurationMs: 3200,       // how long each photo stays on screen
+      song: "./Chori Kiya Re Jiya # Lyrics - Enjoy Hindi Lyrics.mp3",  // put your song file in /music
+
+      // ---- final message screen ----
+      finalTitle: "I'm SO proud of you 💕",
+      finalLetter:
+        `**मेरी प्यारी जान, जन्मदिन की ढेर सारी शुभकामनाएँ! ❤️**
+
+आज का दिन मेरे लिए बहुत खास है, क्योंकि आज उस इंसान का जन्मदिन है जिसने मेरी ज़िंदगी को खुशियों, प्यार और मुस्कुराहटों से भर दिया। भगवान का शुक्रिया कि उन्होंने मुझे तुम्हारे जैसा खूबसूरत दिल वाला साथी दिया।
+
+तुम सिर्फ मेरी प्रेमिका नहीं हो, बल्कि मेरी सबसे अच्छी दोस्त, मेरी ताकत, मेरी प्रेरणा और मेरी हर खुशी की वजह हो। तुम्हारे साथ बिताया हर पल मेरी ज़िंदगी की सबसे कीमती याद है। तुम्हारी मुस्कान मेरी सबसे बड़ी खुशी है, और तुम्हारी खुशी के लिए मैं हमेशा अपनी पूरी कोशिश करता रहूँगा।
+
+इस खास दिन पर मैं बस इतना कहना चाहता हूँ कि चाहे ज़िंदगी में कितनी भी मुश्किलें आएँ, मैं हमेशा तुम्हारा हाथ थामे तुम्हारे साथ खड़ा रहूँगा। हमारा रिश्ता हर दिन और भी मजबूत होता जाए, और हमारा प्यार हमेशा इसी तरह बढ़ता रहे।
+
+मैं दुआ करता हूँ कि तुम्हारी हर इच्छा पूरी हो, तुम्हें जीवन में ढेर सारी सफलता, खुशियाँ और अच्छा स्वास्थ्य मिले। तुम्हारी आँखों में कभी आँसू न आएँ, और अगर कभी आएँ भी, तो उन्हें मुस्कान में बदलने की जिम्मेदारी मेरी होगी।
+
+धन्यवाद मेरी ज़िंदगी में आने के लिए, मुझे समझने के लिए, मुझ पर विश्वास करने के लिए और मुझे इतना प्यार देने के लिए। तुमने मेरी दुनिया को पहले से कहीं ज़्यादा खूबसूरत बना दिया है।
+
+आज तुम्हारा जन्मदिन है, लेकिन सबसे बड़ा उपहार तो मुझे मिला है—तुम्हारे रूप में।
+
+**हैप्पी बर्थडे, मेरी जान!**
+मैं तुमसे आज, कल और हमेशा बेइंतहा प्यार करता रहूँगा।
+
+**हमेशा तुम्हारा,**
+**❤️ तुम्हारा प्यार**
+`,
+      finalSignoff: "Forever your biggest fan, your MOMOs 🐾",
+
+      girlfriendName: "NIDHI" // used in the browser tab title only
+    };
+
+    /* ============================================================
+       You shouldn't need to edit anything below this line.
+       ============================================================ */
+
+    document.title = "A little surprise for " + CONFIG.girlfriendName + " 💌";
+
+    // ---- floating hearts background ----
+    (function floatBg() {
+      const el = document.getElementById('bgFloat');
+      const glyphs = ['💗', '💕', '✨', '⭐', '💫', '🩷'];
+      for (let i = 0; i < 22; i++) {
+        const s = document.createElement('span');
+        s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.fontSize = (14 + Math.random() * 20) + 'px';
+        s.style.animationDuration = (9 + Math.random() * 10) + 's';
+        s.style.animationDelay = (Math.random() * 10) + 's';
+        el.appendChild(s);
+      }
+    })();
+
+    // ---- populate text from CONFIG ----
+    document.getElementById('lockHint').textContent = CONFIG.lockHint;
+    document.getElementById('lockPhotoImg').src = CONFIG.lockPhoto;
+    document.getElementById('wrongTitle').textContent = CONFIG.wrongTitle;
+    document.getElementById('wrongSub').textContent = CONFIG.wrongSub;
+    document.getElementById('askTitle').textContent = CONFIG.askTitle;
+    document.getElementById('askSub').textContent = CONFIG.askSub;
+    document.getElementById('hugTitle').textContent = CONFIG.hugTitle;
+    document.getElementById('hugSub').textContent = CONFIG.hugSub;
+    document.getElementById('birthdayTitle').textContent = CONFIG.birthdayTitle;
+    document.getElementById('birthdaySub').textContent = CONFIG.birthdaySub;
+    document.querySelector('#screen-wrong .gif-mascot img').src = CONFIG.gifs.wrongPassword;
+    document.querySelector('#screen-ask .gif-mascot img').src = CONFIG.gifs.ask;
+    document.querySelector('#screen-no .gif-mascot img').src = CONFIG.gifs.noClick;
+    document.querySelector('#screen-hug .gif-mascot img').src = CONFIG.gifs.hug;
+    document.querySelector('#screen-birthday .gif-mascot img').src = CONFIG.gifs.birthday;
+    document.getElementById('finalTitle').textContent = CONFIG.finalTitle;
+    document.getElementById('finalLetter').textContent = CONFIG.finalLetter;
+    document.getElementById('finalSignoff').textContent = CONFIG.finalSignoff;
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.setAttribute('hidden', ''));
+      const el = document.getElementById(id);
+      el.removeAttribute('hidden');
+      el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in');
+    }
+
+    // ---- lock screen logic ----
+    let entered = '';
+    const boxes = document.querySelectorAll('#passBoxes .box');
+    const unlockBtn = document.getElementById('unlockBtn');
+
+    function renderBoxes() {
+      boxes.forEach((b, i) => {
+        b.textContent = i < entered.length ? '●' : '';
+        b.classList.toggle('filled', i < entered.length);
+      });
+      unlockBtn.classList.toggle('show', entered.length === 4);
+    }
+
+    document.getElementById('keypad').addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn) return;
+      const k = btn.dataset.k;
+      if (k === 'back') { entered = entered.slice(0, -1); }
+      else if (k === 'clear') { entered = ''; }
+      else if (entered.length < 4) { entered += k; }
+      renderBoxes();
+    });
+
+    unlockBtn.addEventListener('click', () => {
+      if (entered === CONFIG.password) {
+        showScreen('screen-ask');
+      } else {
+        document.getElementById('screen-lock').classList.add('shake');
+        setTimeout(() => {
+          document.getElementById('screen-lock').classList.remove('shake');
+          entered = ''; renderBoxes();
+          showScreen('screen-wrong');
+        }, 350);
+      }
+    });
+
+    document.getElementById('wrongTryAgain').addEventListener('click', () => showScreen('screen-lock'));
+
+    // ---- ask yes/no logic ----
+    let noCount = 0;
+    document.getElementById('noBtn').addEventListener('click', () => {
+      const msg = CONFIG.noMessages[Math.min(noCount, CONFIG.noMessages.length - 1)];
+      document.getElementById('noTitle').textContent = msg;
+      document.getElementById('noSub').textContent = noCount < CONFIG.noMessages.length - 1 ? "Give it another chance?" : "Okay let's just say yes 😌";
+      noCount++;
+      showScreen('screen-no');
+    });
+    document.getElementById('noTryAgain').addEventListener('click', () => showScreen('screen-ask'));
+    document.getElementById('yesBtn').addEventListener('click', () => showScreen('screen-hug'));
+
+    // ---- new levels: virtual hug -> happy birthday -> photo memories ----
+    document.getElementById('hugContinue').addEventListener('click', () => showScreen('screen-birthday'));
+    document.getElementById('birthdayContinue').addEventListener('click', () => startPhotos());
+
+    // ---- photo memories ----
+    let photoIndex = 0, photoTimer = null;
+    function buildPhotos() {
+      const frame = document.getElementById('photoFrame');
+      const dots = document.getElementById('photoDots');
+      frame.innerHTML = ''; dots.innerHTML = '';
+      CONFIG.photos.forEach((p, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide' + (i === 0 ? ' active' : '');
+        slide.dataset.i = i;
+        const img = document.createElement('img');
+        img.src = p.src;
+        img.alt = p.caption || '';
+        img.onerror = function () { this.replaceWith(fallbackNode('Add photo ' + (i + 1) + ' → ' + p.src)); };
+        slide.appendChild(img);
+        frame.appendChild(slide);
+
+        const dot = document.createElement('span');
+        if (i === 0) dot.className = 'active';
+        dots.appendChild(dot);
+      });
+    }
+    function showPhoto(i) {
+      document.querySelectorAll('#photoFrame .slide').forEach((s, idx) => s.classList.toggle('active', idx === i));
+      document.querySelectorAll('#photoDots span').forEach((d, idx) => d.classList.toggle('active', idx === i));
+      document.getElementById('photoCaption').textContent = CONFIG.photos[i].caption || '';
+    }
+    function startPhotos() {
+      buildPhotos();
+      photoIndex = 0;
+      showPhoto(0);
+      showScreen('screen-photos');
+      tryPlayMusic();
+      clearInterval(photoTimer);
+      photoTimer = setInterval(() => {
+        photoIndex++;
+        if (photoIndex >= CONFIG.photos.length) {
+          clearInterval(photoTimer);
+          setTimeout(() => showScreen('screen-final'), 900);
+          return;
+        }
+        showPhoto(photoIndex);
+      }, CONFIG.photoDurationMs);
+    }
+
+    // ---- music ----
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+    bgMusic.querySelector('source').src = CONFIG.song;
+    bgMusic.load();
+    function tryPlayMusic() {
+      bgMusic.play().then(() => { musicToggle.textContent = '🔊'; }).catch(() => { musicToggle.textContent = '🔈'; });
+    }
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) { bgMusic.play().then(() => musicToggle.textContent = '🔊').catch(() => { }); }
+      else { bgMusic.pause(); musicToggle.textContent = '🔈'; }
+    });
+
+    // ---- final screen ----
+    document.getElementById('replayBtn').addEventListener('click', () => {
+      bgMusic.pause(); bgMusic.currentTime = 0; musicToggle.textContent = '🔈';
+      entered = ''; renderBoxes();
+      showScreen('screen-lock');
+    });
+
+    renderBoxes();
+  </script>
+</body>
+
+</html>
